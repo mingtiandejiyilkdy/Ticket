@@ -1,0 +1,236 @@
+﻿@using Ticket.Models; 
+@using Ticket.Common;
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+    AdminMenu Menu = ViewBag.model == null ? new AdminMenu() : (AdminMenu)ViewBag.model; 
+} 
+<div style="clear:both; margin-top:15px;"></div>
+<form class="layui-form" action="" lay-filter="example">
+<div class="layui-form-item" style="display: none;">
+    <label class="layui-form-label">
+        Id</label>
+    <div class="layui-input-block">
+        <input type="text" name="Id" lay-verify="Id" autocomplete="off" placeholder="" value="@Menu.ID"
+            class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        菜单名</label>
+    <div class="layui-input-inline">
+        <input type="text" name="MenuName" lay-verify="MenuName" autocomplete="off"
+            placeholder="菜单名" class="layui-input">
+    </div> 
+</div>  
+  <div class="layui-form-item">
+        <label class="layui-form-label">上级菜单</label>
+        <div class="layui-input-inline">
+            <div class="layui-unselect layui-form-select downpanel">
+                <div class="layui-select-title"> 
+                    <input type="text" id="ParentId" name="ParentId" value="@Menu.ParentID" lay-filter="demo" placeholder="顶级菜单" autocomplete="off" class="layui-input">
+                    <i class="layui-edge"></i>
+                </div> 
+            </div>
+        </div>
+    </div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        菜单标识</label>
+    <div class="layui-input-inline">
+        <input type="text" name="MenuKey" lay-verify="text" autocomplete="off"
+            placeholder="请输入" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        唯一不可重复</div>
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        菜单地址</label>
+    <div class="layui-input-inline">
+        <input type="text" name="MenuUrl"  autocomplete="off"
+            placeholder="请输入" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        如：http://www.baidu.com</div>
+</div> 
+<div class="layui-form-item">
+    <label class="layui-form-label">菜单类型</label>
+    <div class="layui-input-inline">
+      <select name="MenuType" lay-filter="aihao">
+        <option value=""></option> 
+        <option value="1" selected="">菜单</option>
+        <option value="2">按钮</option> 
+      </select>
+    </div>
+  </div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        备注</label>
+    <div class="layui-input-inline">
+        <input type="text" name="Remark"  autocomplete="off"
+            placeholder="请输入" class="layui-input">
+    </div> 
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        排序</label>
+    <div class="layui-input-inline">
+        <input type="text" name="Sort"  autocomplete="off"
+            placeholder="请输入" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        越大越靠前</div>
+</div> 
+<div class="layui-form-item">
+    <label class="layui-form-label">
+        启用</label>
+    <div class="layui-input-block">
+        <input type="radio" name="Status" value="0" title="否">
+        <input type="radio" name="Status" value="1" title="是" checked="">
+    </div>
+</div>
+<div class="layui-form-item layui-hide">
+    <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit"
+        value="确认添加">
+    <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit"
+        value="确认编辑">
+</div>
+</form>
+<script type="text/javascript">
+    var moduleKey = "Menu";
+    var moduleName = "菜单";
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+  , layer = layui.layer
+  , layedit = layui.layedit
+  , admin = layui.admin
+  , laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            MenuName: function (value) {
+                if (value.length < 2) {
+                    return '菜单名至少2个字符';
+                }
+            } 
+    , content: function (value) {
+        layedit.sync(editIndex);
+    }
+        });
+
+        //监听指定开关
+        form.on('switch(switchTest)', function (data) {
+            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit)', function (data) {
+            var field = data.field; //获取提交的字段
+
+            PostData(field);
+            return false;
+        });
+
+        function PostData(data) {
+            var postUrl = "/Admin/" + moduleKey + "/Add";
+            if (Number(data.Id) > 0) {
+                postUrl = "/Admin/" + moduleKey + "/Edit";
+            }
+            $.ajax({
+                type: 'POST',
+                url: postUrl, // ajax请求路径
+                data: data,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引  
+
+                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                        //$.ajax({});
+                        parent.layui.table.reload('idTest'); //重载表格    
+                        layer.msg('操作成功');
+                        parent.layer.close(index); //再执行关闭 
+                    }
+                    else {
+                        layer.tips("操作不成功", obj.othis);
+                    }
+                }
+            });
+        };
+
+
+        //表单初始赋值
+        form.val('example', {
+            "MenuName": "@Menu.MenuName"  
+            ,"MenuKey": "@Menu.MenuKey"  
+            ,"MenuUrl": "@Menu.MenuUrl"
+            , "MenuType": "@Menu.MenuType"
+            , "Remark": "@Menu.Remark"
+            , "Sort": "@Menu.Sort"   
+    , "Status": @Menu.Status //开关状态 
+        })
+
+
+    }); 
+     
+</script>
+
+
+  <script>
+   
+      //config的设置是全局的
+      layui.config({
+          base: '@Util.WebJsPath/Resource/extends/' //假设这是test.js所在的目录
+      }).extend({ //设定模块别名
+          treeselect: 'treeselect' //如果test.js是在根目录，也可以不用设定别名 
+      });
+
+      layui.use(['treeselect', 'jquery','form'], function () {
+          var $ = layui.jquery
+          var authtree = layui.authtree;
+          var treeselect = layui.treeselect;
+          var form = layui.form;
+
+          //绑定下拉框
+          $.ajax({
+              url: '/admin/menu/GetMenuTreeSelect/1',
+              dataType: 'json',
+              success: function (data) {
+                  treeselect.render(
+                {
+                    elem: "#ParentId",
+                    data: data.data, //可以是treedata，也可以是 获取treedata的URL地址
+                    method: "GET"
+                });
+              }
+          })
+      });
+
+  </script>
+  
+    <style type="text/css"> 
+        .layui-form-select .layui-tree {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 42px;
+            padding: 5px 0;
+            z-index: 999;
+            min-width: 100%;
+            border: 1px solid #d2d2d2;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.12);
+            box-sizing: border-box;
+        }
+        .layui-form-selected .layui-tree {
+            display: block;
+        }
+    </style>

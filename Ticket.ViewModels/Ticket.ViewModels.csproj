@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0A63D710-9EE7-493A-B831-7895F217239F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ticket.ViewModels</RootNamespace>
+    <AssemblyName>Ticket.ViewModels</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountViewModel.cs" />
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Contract\ChargeCardViewModel.cs" />
+    <Compile Include="Contract\ContractViewModel.cs" />
+    <Compile Include="Custom\CustomTypeViewModel.cs" />
+    <Compile Include="Custom\CustomViewModel.cs" />
+    <Compile Include="LayoutViewModel.cs" />
+    <Compile Include="MenuViewModel.cs" />
+    <Compile Include="Merchant\MerchantTypeViewModel.cs" />
+    <Compile Include="Merchant\MerchantViewModel.cs" />
+    <Compile Include="Product\ProductTypeViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AdminRoleViewModel.cs" />
+    <Compile Include="Tenant\TenantViewModel.cs" />
+    <Compile Include="AdminActionViewModel.cs" />
+    <Compile Include="Ticket\TicketBatchViewModel.cs" />
+    <Compile Include="Ticket\TicketTypeViewModel.cs" />
+    <Compile Include="Ticket\TicketViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ticket.Common\Ticket.Common.csproj">
+      <Project>{8789ECC4-6750-48CB-AC3E-5BFD20157E4B}</Project>
+      <Name>Ticket.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ticket.Enum\Ticket.Enum.csproj">
+      <Project>{03A4994E-3567-4CAF-9BFA-7550EBA9B107}</Project>
+      <Name>Ticket.Enum</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

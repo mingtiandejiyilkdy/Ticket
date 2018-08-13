@@ -1,0 +1,287 @@
+﻿@using Ticket.ViewModels.Contract
+@using Ticket.ViewModels.Ticket
+@using Ticket.Models.Financial
+@using Ticket.Common
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+    ContractViewModel showModel = ViewBag.contractViewModel == null ? new ContractViewModel() : (ContractViewModel)ViewBag.contractViewModel;
+    List<TreeSelect> treeSelects = (List<TreeSelect>)ViewBag.selectTrees;
+    List<CustomFinancialModel> customFinancial = (List<CustomFinancialModel>)ViewBag.customFinancials;
+    List<TicketBatchViewModel> ticketBatchs = (List<TicketBatchViewModel>)ViewBag.ticketBatchs; 
+}
+<form class="layui-form" action="" lay-filter="example">
+<div class="layui-form-item" style="display: none;">
+    <label class="layui-form-label">
+        Id</label>
+    <div class="layui-input-block">
+        <input type="text" name="Id" autocomplete="off" placeholder="" value="0" class="layui-input">
+    </div>
+</div>
+<table class="layui-hide" id="idTest" lay-filter="demo">
+</table>
+<script type="text/javascript">
+    var moduleKey = "ChargeCard";
+    var moduleName = "客户充卡";
+    layui.use('table', function () {
+        var table = layui.table;
+
+        table.render({
+            elem: '#idTest'
+            , method: 'post'
+            , url: '/Admin/' + moduleKey + '/PageList'
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [[
+                  { field: 'ID', width: 80, title: '序号' }
+                  , { field: 'TicketTypeName', width: 80, title: '凭据类型' }
+                  , { field: 'MoneyTypeypeStr', width: 80, title: '金额类型' }
+                  , { field: 'CurrentCount', width: 80, title: '张数' }
+                  , { field: 'FaceAmount', width: 80, title: '面额' }
+                  , { field: 'CurrentAmount', title: '合计' }
+                  , { field: 'CreateUser', title: '充值人' }
+                  , { field: 'CreateTimeStr', title: '充值时间' }
+                  , { field: 'CreateIP', title: '充值IP' }
+                ]]
+        });
+    });
+</script>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        客户名称</label>
+    <div class="layui-input-inline">
+        <input type="hidden" name="customId" id="customId" value="@showModel.CustomId" />
+        <input type="text"  autocomplete="off" value="@showModel.CustomName" disabled="disabled" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        合同/协议</label>
+    <div class="layui-input-inline">
+        <input type="text"  autocomplete="off" value="@showModel.ContractNo" disabled="disabled" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        金额类型</label>
+    <div class="layui-input-inline">
+        <select name="MoneyType" lay-filter="moneyType">
+            <option value=""></option>
+            <option value="1">应收</option>
+            <option value="2">赠送</option>
+            <option value="3">置换</option>
+        </select>
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        可充值金额</label>
+    <div class="layui-input-inline">
+        <input type="text" id="Balance" autocomplete="off" value="" disabled="disabled" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        卡类型</label>
+    <div class="layui-input-inline">
+        <select name="TicketTypeId" lay-filter="aihao">
+            <option value=""></option>
+            @foreach (var item in treeSelects)
+            {
+                <option value="@item.value">@item.name</option> 
+            }
+        </select>
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        请选择卡类型</div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        充值张数</label>
+    <div class="layui-input-inline">
+        <input type="text" name="CurrentCount" autocomplete="off" placeholder="请输入充值张数" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        凭据面额</label>
+    <div class="layui-input-inline">
+        <input type="text" name="FaceAmount" autocomplete="off" placeholder="请输入凭据面额" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        应收金额</label>
+    <div class="layui-input-inline">
+        <input type="text" name="CurrentAmount" autocomplete="off" placeholder="自动计算" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        到期日期</label>
+    <div class="layui-input-inline">
+        <input type="text" name="ExpireDate" autocomplete="off" placeholder="请输入到期日期" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        制卡批次</label>
+    <div class="layui-input-inline">
+        <select name="TicketBatchId" lay-filter="aihao">
+            <option value=""></option>
+            @foreach (var item in ticketBatchs)
+            {
+                <option value="@item.ID">@item.TicketBatchNo+"-"+@item.TicketBatchName</option> 
+            }
+        </select>
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        卡号范围</label>
+    <div class="layui-input-inline">
+        <input type="text" name="TicketStart" autocomplete="off" placeholder="请输入" class="layui-input">
+        <input type="text" name="TicketEnd" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        消费级别</label>
+    <div class="layui-input-inline">
+        <select name="Consumptionlevel" lay-filter="aihao">
+            <option value=""></option>
+            <option value="1">应收</option>
+            <option value="2">赠送</option>
+            <option value="3">置换</option>
+        </select>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">
+        是否通卡</label>
+    <div class="layui-input-block">
+        <input type="radio" name="IsCommonCard" value="0" title="否">
+        <input type="radio" name="IsCommonCard" value="1" title="是" checked="">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        排序</label>
+    <div class="layui-input-inline">
+        <input type="text" name="Sort" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        越大越靠前</div>
+</div>
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button type="button" lay-submit lay-filter="layuiadmin-app-form-submit" class="layui-btn layui-btn-normal"
+            lay-submit lay-filter="formDemo">
+            立即提交</button>
+    </div>
+</div>
+</div>
+</form>
+<script>
+    layui.use(['form', 'layedit', 'laydate', 'table'], function () {
+        var form = layui.form
+  , layer = layui.layer
+  , layedit = layui.layedit
+  , admin = layui.admin
+  , laydate = layui.laydate
+        , table = layui.table;
+
+        //自定义验证规则
+        form.verify({
+            ChargeCardName: function (value) {
+                if (value.length < 2) {
+                    return '凭据类型至少2个字符';
+                }
+            }
+    , content: function (value) {
+        layedit.sync(editIndex);
+    }
+        });
+
+        //监听指定开关
+        form.on('switch(switchTest)', function (data) {
+            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+        form.on('select(moneyType)', function (data) {
+            var customId = $("#customId").val();
+            GetBlance(customId, data.value);
+        });
+
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit)', function (data) {
+            var field = data.field; //获取提交的字段
+
+            PostData(field);
+            return false;
+        });
+
+        function PostData(data) {
+            $.ajax({
+                type: 'POST',
+                url: "/Admin/ChargeCard/Save", // ajax请求路径
+                data: data,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        table.reload('idTest'); //重载表格    
+                        layer.msg('操作成功');
+                    }
+                    else {
+                        layer.msg('操作不成功,'+data.retmsg);
+                    }
+                }
+            });
+        };
+
+        function GetBlance(customId, moneyType) {
+            $.ajax({
+                type: 'POST',
+                url: "/Admin/ChargeCard/GetBlance", // ajax请求路径
+                data: { customId: customId, moneyType: moneyType },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        if (data.data.length > 0) {
+                            var balance = 0;
+                            if (moneyType == 1) {
+                                balance = data.data[0].MoneyTypeOneAmount;
+                            }
+                            if (moneyType == 2) {
+                                balance = data.data[0].MoneyTypeTwoAmount;
+                            }
+                            if (moneyType == 3) {
+                                balance = data.data[0].MoneyTypeThreeAmount;
+                            }
+                            $("#Balance").val(balance)
+                        }
+                        else {
+                            layer.msg('当前合同/协议当前金额类型无可充值金额');
+                        }
+                    }
+                    else {
+                        layer.msg('获取可充值金额不成功');
+                    }
+                }
+            });
+        };
+
+
+        //表单初始赋值
+        form.val('example', {
+            "CustomId": "@showModel.CustomId"
+            , "Sort": "@showModel.Sort"
+            , "IsEnable": true //开关状态 
+        })
+
+
+    }); 
+     
+</script>

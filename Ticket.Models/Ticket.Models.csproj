@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F88D0C35-BD2B-4191-AA13-C1B5952F8D39}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ticket.Models</RootNamespace>
+    <AssemblyName>Ticket.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PWMIS.Core">
+      <HintPath>..\Source\lib\PWMIS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Source\lib\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminAccount.cs" />
+    <Compile Include="AdminAccountRole.cs" />
+    <Compile Include="AdminMenu.cs" />
+    <Compile Include="AdminRole.cs" />
+    <Compile Include="Contract\ChargeCardsModel.cs" />
+    <Compile Include="Contract\ContractModel.cs" />
+    <Compile Include="Custom\CustomModel.cs" />
+    <Compile Include="Custom\CustomTypeModel.cs" />
+    <Compile Include="Financial\CustomFinancialDetailModel.cs" />
+    <Compile Include="Financial\CustomFinancialModel.cs" />
+    <Compile Include="LogOnModel.cs" />
+    <Compile Include="Merchant\MerchantModel.cs" />
+    <Compile Include="Merchant\MerchantTypeModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tenant\TenantModel.cs" />
+    <Compile Include="AdminAction.cs" />
+    <Compile Include="Ticket\TicketBatchModel.cs" />
+    <Compile Include="Ticket\TicketInfo.cs" />
+    <Compile Include="Ticket\TicketTypeModel.cs" />
+    <Compile Include="Product\ProductTypeModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ticket.Enum\Ticket.Enum.csproj">
+      <Project>{03A4994E-3567-4CAF-9BFA-7550EBA9B107}</Project>
+      <Name>Ticket.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ticket.Interface\Ticket.Interface.csproj">
+      <Project>{E313A736-2DDC-4AD2-9973-D8F0C1DDC451}</Project>
+      <Name>Ticket.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

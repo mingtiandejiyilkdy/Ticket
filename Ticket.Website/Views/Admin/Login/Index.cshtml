@@ -1,0 +1,78 @@
+﻿@model Ticket.Models.LogOnModel
+
+@{
+    ViewBag.Title = "登录";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>LarryCMS后台登录</title>
+	<meta name="renderer" content="webkit">	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+	<meta name="apple-mobile-web-app-capable" content="yes">	
+	<meta name="format-detection" content="telephone=no">	
+	<!-- load css -->
+	<link rel="stylesheet" type="text/css" href="~/Resource/common/layui/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="~/Resource/css/login.css" media="all"> 
+    
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+</head>
+<body>
+
+@Html.ValidationSummary(true, "登录不成功。请更正错误并重试。")
+<div class="layui-canvs"></div>
+<div class="layui-layout layui-layout-login">
+	<h1>
+		 <strong>乐看电影网</strong>
+		 <em>Management System</em>
+	</h1>
+    
+
+@using (Html.BeginForm("LoginIn", "Login", FormMethod.Post))
+{
+	<div class="layui-user-icon larry-login">
+         @Html.TextBoxFor(m => m.UserName, new { placeholder = " 请输入用户名", id = "UserName", @class = "login_txtbx" })
+	</div>
+	<div class="layui-pwd-icon larry-login">
+         @Html.TextBoxFor(m => m.Password, new { placeholder = " 请输入密码", id = "UserName", @class = "login_txtbx" })
+	</div>
+    @*<div class="layui-val-icon larry-login">
+    	<div class="layui-code-box">
+    		<input type="text" id="code" name="code" placeholder="验证码" maxlength="4" class="login_txtbx">
+            <img src="images/verifyimg.png" alt="" class="verifyImg" id="verifyImg" onClick="javascript:this.src='xxx'+Math.random();">
+    	</div>
+    </div>*@
+    <div class="layui-submit larry-login"> 
+    	<input type="submit" value="立即登陆" class="submit_btn"/>
+    </div>
+    <div style="color:#fff;">
+         @Html.ValidationMessageFor(m => m.UserName) <br />
+         @Html.ValidationMessageFor(m => m.Password)  
+    </div>
+}
+    <div class="layui-login-text">
+    	<p>© 2017-2018 乐看电影网 版权所有</p>
+        <p>豫ICP备888888</p>
+    </div>
+</div>
+<script type="text/javascript" src="~/Resource/common/layui/lay/dest/layui.all.js"></script>
+<script type="text/javascript" src="~/Resource/js/login.js"></script>
+<script type="text/javascript" src="~/Resource/jsplug/jparticle.jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".layui-canvs").jParticle({
+            background: "#141414",
+            color: "#E6E6E6"
+        });
+    });
+</script>
+</body>
+</html>
+ 
+ 

@@ -1,0 +1,206 @@
+﻿@using Ticket.Models.Contract
+@using Ticket.Common
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+    ContractModel showModel = ViewBag.model == null ? new ContractModel() : (ContractModel)ViewBag.model;
+    List<TreeSelect> treeSelects = (List<TreeSelect>)ViewBag.selectTrees;
+} 
+<script src="@Util.WebJsPath/Resource/js/Area/areadata.js" type="text/javascript"></script>
+<script src="@Util.WebJsPath/Resource/js/Area/area.js" type="text/javascript"></script>
+<form class="layui-form" action="" lay-filter="example">
+<div class="layui-form-item" style="display: none;">
+    <label class="layui-form-label">
+        Id</label>
+    <div class="layui-input-block">
+        <input type="text" name="Id"  autocomplete="off" placeholder="" value="@showModel.ID"
+            class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        协议单号</label>
+    <div class="layui-input-inline">
+        <input type="text" name="ContractNo" lay-verify="ContractNo" autocomplete="off"
+            placeholder="自动生成" value="@showModel.ContractNo" disabled="disabled" class="layui-input">
+    </div>
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        客户名称</label>
+    <div class="layui-input-inline">
+         <select name="CustomId" lay-filter="CustomId">
+        <option value=""></option> 
+        @foreach (var item in treeSelects)
+        {
+        <option value="@item.value"  @(item.id==@showModel.CustomId?"selected":"") >@item.name</option> 
+        }
+      </select>
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        请选择客户</div>
+</div>  
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        应收金额</label>
+    <div class="layui-input-inline">
+        <input type="text" name="MoneyTypeOneAmount" lay-verify="MoneyTypeOneAmount" autocomplete="off"
+            placeholder="请输入应收金额" value="@showModel.MoneyTypeOneAmount" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        计入应收金额</div>
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        赠送金额</label>
+    <div class="layui-input-inline">
+        <input type="text" name="MoneyTypeTwoAmount" lay-verify="MoneyTypeTwoAmount" autocomplete="off"
+            placeholder="请输入赠送金额" value="@showModel.MoneyTypeTwoAmount" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        应收记0</div>
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        置换金额</label>
+    <div class="layui-input-inline">
+        <input type="text" name="MoneyTypeThreeAmount" lay-verify="MoneyTypeThreeAmount" autocomplete="off"
+            placeholder="请输入置换金额" value="@showModel.MoneyTypeThreeAmount" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        应收记0</div>
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        协议总额</label>
+    <div class="layui-input-inline">
+        <input type="text" name="ContractAmount" lay-verify="ContractAmount" autocomplete="off"
+            placeholder="请输入协议总额" value="@showModel.ContractAmount" class="layui-input">
+    </div> 
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        协议文档</label>
+    <div class="layui-input-inline">        
+        <input type="file" name="file" id="test20">
+    </div> 
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        支付期限</label>
+    <div class="layui-input-inline">
+        <input type="text" name="Deadline" lay-verify="Deadline" autocomplete="off"
+            placeholder="请输入支付期限" value="@showModel.Deadline" class="layui-input">
+    </div> 
+    <div class="layui-form-mid layui-word-aux">
+        如:2010-10-10</div>
+</div> 
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        备注</label>
+    <div class="layui-input-inline">
+        <textarea placeholder="请输入备注信息，如：磁条卡：50张、纸质通票：100张；实付金额：5000元；赠送：2000元；置换：3000元" name="Remark" class="layui-textarea">@showModel.Remark</textarea> 
+    </div> 
+</div>    
+<div class="layui-form-item" lay-filter="">
+    <label class="layui-form-label">
+        排序</label>
+    <div class="layui-input-inline">
+        <input type="text" name="Sort"  autocomplete="off"
+            placeholder="请输入" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">
+        越大越靠前</div>
+</div> 
+<div class="layui-form-item">
+    <label class="layui-form-label">
+        启用</label>
+    <div class="layui-input-block">
+        <input type="radio" name="Status" value="0" title="否">
+        <input type="radio" name="Status" value="1" title="是" checked="">
+    </div>
+</div> 
+<div class="layui-form-item layui-hide">
+    <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit"
+        value="确认添加">
+    <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit"
+        value="确认编辑">
+</div>
+</form>
+<script type="text/javascript">
+    var moduleKey = "Contract";
+    var moduleName = "合同/协议";
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+  , layer = layui.layer
+  , layedit = layui.layedit
+  , admin = layui.admin
+  , laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            ContractName: function (value) {
+                if (value.length < 2) {
+                    return '卡描述至少2个字符';
+                }
+            }
+    , content: function (value) {
+        layedit.sync(editIndex);
+    }
+        });
+
+        //监听指定开关
+        form.on('switch(switchTest)', function (data) {
+            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit)', function (data) {
+            var field = data.field; //获取提交的字段
+
+            PostData(field);
+            return false;
+        });
+
+        function PostData(data) {
+            var postUrl="/Admin/"+moduleKey+"/Add";
+            if (Number(data.Id) > 0) {
+                postUrl="/Admin/"+moduleKey+"/Edit";
+            }
+            $.ajax({
+                type: 'POST',
+                url: postUrl, // ajax请求路径
+                data: data,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引  
+                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                        //$.ajax({});
+                        parent.layui.table.reload('idTest'); //重载表格    
+                        layer.msg('操作成功');
+                        parent.layer.close(index); //再执行关闭 
+                    }
+                    else {
+                        layer.tips("操作不成功", obj.othis);
+                    }
+                }
+            });
+        };
+
+
+        //表单初始赋值
+        form.val('example', { 
+            "ContractNo": "@showModel.ContractNo"
+            , "Sort": "@showModel.Sort"
+            , "radio(IsEnable)": @showModel.Status //开关状态 
+        })
+
+
+    }); 
+     
+</script>

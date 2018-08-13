@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F777B7DC-455F-4321-9D40-892D3604A9EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ticket.BLL</RootNamespace>
+    <AssemblyName>Ticket.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Source\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PWMIS.Core">
+      <HintPath>..\Source\lib\PWMIS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PWMIS.Core.Extensions">
+      <HintPath>..\Source\lib\PWMIS.Core.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PWMIS.Web">
+      <HintPath>..\Source\lib\PWMIS.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Source\lib\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminAccountBLL.cs" />
+    <Compile Include="AdminMenuBLL.cs" />
+    <Compile Include="AdminRoleBLL.cs" />
+    <Compile Include="BLLBase.cs" />
+    <Compile Include="Contract\ChargeCardBLL.cs" />
+    <Compile Include="Contract\ContractBLL.cs" />
+    <Compile Include="Custom\CustomBLL.cs" />
+    <Compile Include="Custom\CustomTypeBLL.cs" />
+    <Compile Include="Financial\CustomFinancialBLL.cs" />
+    <Compile Include="LocalDbContext.cs" />
+    <Compile Include="LoginBLL.cs" />
+    <Compile Include="Merchant\MerchantBLL.cs" />
+    <Compile Include="Merchant\MerchantTypeBLL.cs" />
+    <Compile Include="Product\ProductTypeBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tenant\TenantBLL.cs" />
+    <Compile Include="AdminActionBLL.cs" />
+    <Compile Include="Ticket\TicketTypeBLL.cs" />
+    <Compile Include="Ticket\TicketBatchBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ticket.Common\Ticket.Common.csproj">
+      <Project>{8789ECC4-6750-48CB-AC3E-5BFD20157E4B}</Project>
+      <Name>Ticket.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ticket.Enum\Ticket.Enum.csproj">
+      <Project>{03A4994E-3567-4CAF-9BFA-7550EBA9B107}</Project>
+      <Name>Ticket.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ticket.Interface\Ticket.Interface.csproj">
+      <Project>{E313A736-2DDC-4AD2-9973-D8F0C1DDC451}</Project>
+      <Name>Ticket.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ticket.Models\Ticket.Models.csproj">
+      <Project>{F88D0C35-BD2B-4191-AA13-C1B5952F8D39}</Project>
+      <Name>Ticket.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ticket.ViewModels\Ticket.ViewModels.csproj">
+      <Project>{0A63D710-9EE7-493A-B831-7895F217239F}</Project>
+      <Name>Ticket.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

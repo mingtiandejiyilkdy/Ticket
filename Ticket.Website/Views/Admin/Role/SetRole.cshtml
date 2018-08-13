@@ -1,0 +1,127 @@
+﻿@using Ticket.Models;
+@using Ticket.Common;
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+    AdminAccount account = ViewBag.model == null ? new AdminAccount() : (AdminAccount)ViewBag.model;
+} 
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md6 layui-col-md-offset1">
+                <br />
+                <!-- 此扩展能递归渲染一个权限树，点击深层次节点，父级节点中没有被选中的节点会被自动选中，单独点击父节点，子节点会全部 选中/去选中 -->
+                <form class="layui-form" lay-filter="example">
+                <div class="layui-form-item" style="display: none;">
+                    <label class="layui-form-label">
+                        用户Id</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Id" lay-verify="Id" autocomplete="off" placeholder="" value="@account.ID"
+            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" lay-filter="">
+                    <label class="layui-form-label">
+                        用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="AccountName" value="@account.AccountName" lay-verify="text" autocomplete="off" placeholder="请输入用户名"
+                            class="layui-input">
+                    </div> 
+                </div> 
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        选择角色</label>
+                    <div class="layui-input-block">
+                        <div id="LAY-auth-tree-index">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-hide">
+                    <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit"
+                        value="确认添加">
+                    <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit"
+                        value="确认编辑">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+<script type="text/javascript">
+layui.config({
+	base: '@Util.WebJsPath/Resource/extends/',
+}).extend({
+	authtree: 'authtree',
+});
+layui.use(['jquery', 'authtree', 'form'], function(){
+	var $ = layui.jquery;
+	var authtree = layui.authtree;
+	var form = layui.form;
+	$.ajax({
+		url: '/admin/role/GetRoleTreeSelect/@account.ID',
+		dataType: 'json',
+		success: function(data){
+			// 渲染时传入渲染目标ID，树形结构数据（具体结构看样例，checked表示默认选中），以及input表单的名字
+			authtree.render('#LAY-auth-tree-index', data.data, {inputname: 'ItemIds[]', layfilter: 'lay-check-auth', openall: true});
+
+			// 监听自定义lay-filter选中状态，PS:layui现在不支持多次监听，所以扩展里边只能改变触发逻辑，然后引起了事件冒泡延迟的BUG，要是谁有好的建议可以反馈我
+			form.on('checkbox(lay-check-auth)', function(data){
+				// 获取所有节点
+				var all = authtree.getAll('#LAY-auth-tree-index');
+				console.log('all', all);
+				// 获取所有已选中节点
+				var checked = authtree.getChecked('#LAY-auth-tree-index');
+				console.log('checked', checked);
+				// 获取所有未选中节点
+				var notchecked = authtree.getNotChecked('#LAY-auth-tree-index');
+				console.log('notchecked', notchecked);
+				// 注意这里：需要等待事件冒泡完成，不然获取叶子节点不准确。
+				setTimeout(function(){
+					// 获取选中的叶子节点
+					var leaf = authtree.getLeaf('#LAY-auth-tree-index');
+					console.log('leaf', leaf);
+				}, 100);
+			});
+		}
+	})
+});
+</script>
+<script type="text/javascript">
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+  , layer = layui.layer
+  , layedit = layui.layedit
+  , admin = layui.admin
+  , laydate = layui.laydate; 
+         
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit)', function (data) {
+            var field = data.field; //获取提交的字段
+
+            PostData(field);
+            return false;
+        });
+
+        function PostData(data) {
+            $.ajax({
+                type: 'POST',
+                url: "/Admin/Role/AccountRoleSave", // ajax请求路径
+                data: data,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引  
+
+                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                        //$.ajax({});
+                        parent.layui.table.reload('test'); //重载表格    
+                        layer.msg('操作成功');
+                        parent.layer.close(index); //再执行关闭 
+                    }
+                    else {
+                        layer.tips("操作不成功", obj.othis);
+                    }
+                }
+            });
+        };  
+    }); 
+     
+</script> 

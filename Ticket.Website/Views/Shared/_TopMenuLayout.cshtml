@@ -1,0 +1,38 @@
+﻿@model Ticket.ViewModels.LayoutViewModel
+@{
+    ViewBag.Title = "_TopMenuVModel.cshtml";
+    long menuId = Request.QueryString["menuId"] == null ? 0 :Convert.ToInt64( Request.QueryString["menuId"]);
+    var actionList=Model.menuList.FindAll(o => o.ParentID==menuId && o.MenuType == 2);
+} 
+
+@if (actionList.Count > 0)
+{
+<blockquote class="layui-elem-quote news_search">
+<div class="layui-form-item">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item"> 
+                <div class="layui-inline"> 
+                    <div class="layui-input-inline">
+                        <input type="text" name="searchTxt" placeholder="请输入搜索关键字" autocomplete="off" class="layui-input">
+                    </div>
+                </div> 
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list layui-btn-normal" lay-submit="" lay-filter="LAY-app-contlist-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+                
+                <div class="layui-btn-group demoTable">
+                    @foreach (var menu in actionList)
+                    {          
+                       <button class="layui-btn layui-btn-normal" data-type="@menu.MenuKey">@menu.MenuName</button> 
+                    } 
+                </div>
+            </div>
+        </div>
+    </div>
+</blockquote>
+}
+@*<div class="layui-btn-group demoTable" style="clear:both; margin:15px 0px 15px 0px;">
+  
+</div> *@

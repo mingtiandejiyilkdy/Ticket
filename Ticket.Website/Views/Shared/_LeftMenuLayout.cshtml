@@ -1,0 +1,39 @@
+﻿@model Ticket.ViewModels.LayoutViewModel
+@{
+    ViewBag.Title = "_TopMenuVModel.cshtml";
+}
+
+        <div class="layui-side-scroll" id="larry-nav-side" lay-filter="side">
+		
+		<!-- 左侧菜单 -->
+		<ul class="layui-nav layui-nav-tree">
+			<li class="layui-nav-item layui-this">
+				<a href="javascript:;" data-url="main.html">
+				    <i class="iconfont icon-home1" data-icon='icon-home1'></i>
+					<span>后台首页</span>
+				</a>
+			</li>
+             @foreach (var menu in Model.menuList.FindAll(o => o.ParentID == 0))
+             {<!-- 系统设置 -->
+			<li class="layui-nav-item">
+					<a href="javascript:;">
+					   <i class="iconfont icon-xitong" ></i>
+					   <span>@menu.MenuName</span>
+					   <em class="layui-nav-more"></em>
+					</a>
+					    <dl class="layui-nav-child">
+                          @foreach (var subMenu in Model.menuList.FindAll(o => o.ParentID == menu.ID))
+                          {  
+					    	<dd>
+                                <a href="javascript:;" data-url="@subMenu.MenuUrl?menuId=@subMenu.ID">
+					    		   <i class="iconfont icon-lanmuguanli" data-icon='icon-lanmuguanli'></i>
+					    		   <span>@subMenu.MenuName</span>
+					    		</a> 
+					    	</dd> 
+                          }
+					    </dl>
+				</li>
+                 
+             } 
+		</ul>
+	    </div> 

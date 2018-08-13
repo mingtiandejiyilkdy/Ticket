@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+} 
+<table class="layui-table" lay-data="{ url:'/Admin/Action/list', page:true, id:'idTest'}"
+    lay-filter="demo">
+    <thead>
+        <tr>
+            <th lay-data="{type:'checkbox', fixed: 'left'}">
+            </th>
+            <th lay-data="{field:'ID', width:80, fixed: true}">
+                ID
+            </th>
+            <th lay-data="{field:'MenuName', }">
+                所属菜单
+            </th>
+            <th lay-data="{field:'ActionKey', }">
+                操作关键字
+            </th>
+            <th lay-data="{field:'ActionName', }">
+                操作名称
+            </th>
+            <th lay-data="{field:'CreateTimeStr', }">
+                创建时间
+            </th> 
+            <th lay-data="{field:'StatusStr'}">
+                状态
+            </th>
+        </tr>
+    </thead>
+</table>  
+
+<script type="text/javascript">
+    var moduleKey = "Action";
+    var moduleName = "操作";
+    //js初始化
+    layui.use(['table', 'form', 'layedit', 'laydate'], function () {
+        var ajaxUrl = "/Admin/" + moduleName + "/";
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.$
+
+        //监听搜索
+        form.on('submit(LAY-app-contlist-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('idTest', {
+                where: field
+            });
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj)
+        });
+
+        //头部操作按钮
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+
+            //js初始化 
+            Init(moduleKey, moduleName, type, table, form, $);
+            //active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

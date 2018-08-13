@@ -1,0 +1,154 @@
+﻿@using Ticket.Models;
+@using Ticket.Common;
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+    AdminAction item = ViewBag.model == null ? new AdminAction() : (AdminAction)ViewBag.model;
+    List<TreeSelect> treeSelects = (List<TreeSelect>)ViewBag.selectTrees;
+}
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md6 layui-col-md-offset1">
+            <br />
+            <!-- 此扩展能递归渲染一个权限树，点击深层次节点，父级节点中没有被选中的节点会被自动选中，单独点击父节点，子节点会全部 选中/去选中 -->
+            <form class="layui-form" lay-filter="example">
+            <div class="layui-form-item" style="display: none;">
+                <label class="layui-form-label">
+                    Id</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Id" lay-verify="Id" autocomplete="off" placeholder="" value="@item.ID"
+            class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" lay-filter="">
+                <label class="layui-form-label">
+                    所属菜单</label>
+                <div class="layui-input-inline">
+                    <select name="MenuId" lay-filter="MenuId">
+                        <option value=""></option>
+                        @foreach (var menu in treeSelects)
+                        {
+                            <option value="@menu.value"  @(menu.id == @item.MenuId ? "selected" : "") >@menu.name</option> 
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" lay-filter="">
+                <label class="layui-form-label">
+                    操作关键字</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="ActionKey" lay-verify="text" autocomplete="off" placeholder="请输入操作关键字"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    字母，最小5位</div>
+            </div>
+            <div class="layui-form-item" lay-filter="">
+                <label class="layui-form-label">
+                    操作名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="ActionName" lay-verify="text" autocomplete="off" placeholder="请输入操作名称"
+                        class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    启用</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="Status" value="0" title="否">
+                    <input type="radio" name="Status" value="1" title="是" checked="">
+                </div>
+            </div>
+            <div class="layui-form-item layui-hide">
+                <input type="button" lay-submit lay-filter="layuiadmin-app-form-submit" id="layuiadmin-app-form-submit"
+                    value="确认添加">
+                <input type="button" lay-submit lay-filter="layuiadmin-app-form-edit" id="layuiadmin-app-form-edit"
+                    value="确认编辑">
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var moduleKey = "Action";
+    var moduleName = "操作";
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+  , layer = layui.layer
+  , layedit = layui.layedit
+  , admin = layui.admin
+  , laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            MenuId: function (value) {
+                if (value.length < 1) {
+                    return '请选择所属菜单';
+                }
+            }, 
+            text: function (value) {
+                if (value.length < 2) {
+                    return '至少2个字符';
+                }
+            } 
+        });
+
+        //监听指定开关
+        form.on('switch(switchTest)', function (data) {
+            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit)', function (data) {
+            var field = data.field; //获取提交的字段
+
+            PostData(field);
+            return false;
+        });
+
+        function PostData(data) {
+            var postUrl="/Admin/"+moduleKey+"/Add";
+            if (Number(data.Id) > 0) {
+                postUrl="/Admin/"+moduleKey+"/Edit";
+            }
+            $.ajax({
+                type: 'POST',
+                url: postUrl, // ajax请求路径
+                data: data,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引  
+
+                        //提交 Ajax 成功后，关闭当前弹层并重载表格
+                        //$.ajax({});
+                        parent.layui.table.reload('idTest'); //重载表格    
+                        layer.msg('操作成功');
+                        parent.layer.close(index); //再执行关闭 
+                    }
+                    else {
+                        layer.tips("操作不成功", obj.othis);
+                    }
+                }
+            });
+        };
+
+
+        //表单初始赋值
+        form.val('example', {
+            "MenuId": "@item.MenuId"
+            ,"ActionKey": "@item.ActionKey"
+            ,"ActionName": "@item.ActionName" 
+            , "Status": @item.Status //开关状态 
+        })
+
+
+    }); 
+     
+</script>
