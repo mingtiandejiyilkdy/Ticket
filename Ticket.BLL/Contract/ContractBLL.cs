@@ -215,11 +215,10 @@ namespace Ticket.BLL.Contract
             }
 
             int returnvalue = 0;
-            //开始事务
             PWMIS.DataProvider.Data.AdoHelper db = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper();
             try
             {
-
+                //开始事务
                 db.BeginTransaction();
 
                 //更新状态
@@ -258,7 +257,7 @@ namespace Ticket.BLL.Contract
                     }
                     else
                     {
-                        //客户财务信息初修改
+                        //客户财务信息修改
                         financialModel.CustomId = item.CustomId;
                         financialModel.MoneyTypeOneAmount += item.MoneyTypeOneAmount;
                         financialModel.MoneyTypeOneTotalAmount += item.MoneyTypeOneAmount;

@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminManageLayout.cshtml";
+} 
+
+<table class="layui-hide" id="idTest" lay-filter="demo"></table> 
+<script type="text/javascript"> 
+    var moduleKey = "CustomReceipted";
+    var moduleName = "实收款";
+    //js初始化
+    layui.use(['table', 'form', 'layedit', 'laydate'], function () {
+        var ajaxUrl = "/Admin/" + moduleName + "/";
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.$
+
+        table.render({
+            elem: '#idTest'
+            , method: 'post'
+            , url: '/Admin/' + moduleKey + '/PageList'
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [[
+              { type: 'checkbox' }
+              , { field: 'ID', width: 80, title: 'ID' }
+              , { field: 'CustomReceiptedNo', title: '收款单号' }
+              , { field: 'CustomName', title: '客户名称' }
+              , { field: 'BankAccountCode', title: '收款银行' }
+              , { field: 'CurrentAmount', title: '实收金额' }
+              , { field: 'DateOfEntryStr', title: '到帐日期' }
+              , { field: 'CreateUser', title: '收款人' }
+              , { field: 'StatusStr', width: 80, title: '状态' }
+              , { field: 'CreateTimeStr', title: '创建时间' }
+            ]]
+            , page:
+            { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+              , curr: 1 //设定初始在第 5 页
+              , groups: 5 //只显示 1 个连续页码
+              , first: true //不显示首页
+              , last: true //不显示尾页 
+            }
+        });
+
+
+        //监听搜索
+        form.on('submit(LAY-app-contlist-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('idTest', {
+                where: field
+            });
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj)
+        });
+
+        //头部操作按钮
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+
+            //js初始化 
+            Init(moduleKey, moduleName, type, table, form, $);
+            //active[type] ? active[type].call(this) : '';
+        });
+
+
+    });
+
+</script>

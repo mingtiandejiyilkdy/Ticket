@@ -62,12 +62,16 @@
     <Compile Include="AdminAccountBLL.cs" />
     <Compile Include="AdminMenuBLL.cs" />
     <Compile Include="AdminRoleBLL.cs" />
+    <Compile Include="Bank\BankAccountBLL.cs" />
+    <Compile Include="Bank\BankBLL.cs" />
     <Compile Include="BLLBase.cs" />
     <Compile Include="Contract\ChargeCardBLL.cs" />
     <Compile Include="Contract\ContractBLL.cs" />
     <Compile Include="Custom\CustomBLL.cs" />
     <Compile Include="Custom\CustomTypeBLL.cs" />
     <Compile Include="Financial\CustomFinancialBLL.cs" />
+    <Compile Include="Financial\CustomAccReceiptBLL.cs" />
+    <Compile Include="Financial\CustomReceiptedBLL.cs" />
     <Compile Include="LocalDbContext.cs" />
     <Compile Include="LoginBLL.cs" />
     <Compile Include="Merchant\MerchantBLL.cs" />

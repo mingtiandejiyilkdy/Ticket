@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ticket.Common;
-using PWMIS.DataMap.Entity;
+using System.ComponentModel; 
+using PWMIS.DataMap.Entity; 
 using PWMIS.Core.Extensions;
-using Ticket.Models.Custom;
-using Ticket.ViewModels.Custom;
+using Ticket.Common;
+using Ticket.ViewModels.Bank;
+using Ticket.Models.Bank;
+using PWMIS.Core.Extensions; 
 
-namespace Ticket.BLL.Custom
+namespace Ticket.BLL.Bank
 {
-    public class CustomBLL : BLLBase
+    public class BankBLL : BLLBase
     {
         #region 基础方法
         /// <summary>
@@ -19,25 +21,14 @@ namespace Ticket.BLL.Custom
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public List<CustomModel> GetAllModelList()
-        {
-            JsonRsp<CustomViewModel> rsp = new JsonRsp<CustomViewModel>();
-            CustomModel model = new CustomModel();
-            model.TenantId = TenantId;
+        public List<BankModel> GetAllModelList()
+        { 
+            BankModel model = new BankModel();
             OQL q = OQL.From(model)
                 .Select()
-                .Where(model.TenantId)
-                .OrderBy(model.Sort, "desc")
+                .OrderBy(model.ID, "asc")
                 .END;
-            return q.ToList<CustomModel>();
-        }
-
-        OQLCompare CreateCondition(OQLCompare cmp, CustomModel custom)
-        {
-            OQLCompare cmpResult = null;
-            if (custom.CustomName != "")
-                cmpResult = cmp.Comparer(custom.CustomName, OQLCompare.CompareType.Like, "%" + custom.CustomName + "%");
-            return cmpResult;
+            return q.ToList<BankModel>();//使用OQL扩展 
         }
 
         /// <summary>
@@ -46,21 +37,39 @@ namespace Ticket.BLL.Custom
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public JsonRsp<CustomModel> GetPageList(string searchTxt, int pageIndex, int pageSize)
+        public JsonRsp<BankViewModel> GetPageList(int pageIndex, int pageSize)
         {
+            JsonRsp<BankViewModel> rsp = new JsonRsp<BankViewModel>();
 
-            CustomModel CustomModel = new CustomModel();
-            JsonRsp<CustomModel> rsp = new JsonRsp<CustomModel>();
-
-            OQLCompareFunc<CustomModel> cmpResult = (cmp, c) =>
-                    (
-                        //cmp.Property(c.CustomName) == "ABC" &
-                      cmp.Comparer(c.CustomName, OQLCompare.CompareType.Like, "%" + searchTxt + "%")
-                    );
-
+            BankModel m = new BankModel();
+            OQL q = OQL.From(m)
+                .Select()
+                .OrderBy(m.ID, "asc")
+                .END;
+            //分页
+            q.Limit(pageSize, pageIndex, true);
+            //q.PageWithAllRecordCount = allCount;
+            //List<Employee> list= EntityQuery<Employee>.QueryList(q);
+            List<BankModel> list = q.ToList<BankModel>();//使用OQL扩展
+            rsp.data = list.ConvertAll<BankViewModel>(o =>
+            {
+                return new BankViewModel()
+                {
+                    ID = o.ID,
+                    BankName = o.BankName,
+                    BankType = o.BankType,
+                    CreateId = o.CreateId,
+                    CreateUser = o.CreateUser,
+                    CreateIP = o.CreateIP,
+                    CreateTime = o.CreateTime,
+                    Sort = o.Sort,
+                    Status = o.Status, 
+                };
+            }
+            );
             rsp.success = true;
             rsp.code = 0;
-            rsp.data = GetList<CustomModel>(cmpResult, null, pageSize, pageIndex); 
+            rsp.count = q.PageWithAllRecordCount;
             return rsp;
         }
 
@@ -69,9 +78,9 @@ namespace Ticket.BLL.Custom
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public JsonRsp Add(CustomModel model)
+        public JsonRsp Add(BankModel model)
         {
-            int returnvalue = Add<CustomModel>(model);
+            int returnvalue = Add<BankModel>(model);
             return new JsonRsp { success = returnvalue > 0, code = returnvalue };
         }
         /// <summary>
@@ -79,9 +88,9 @@ namespace Ticket.BLL.Custom
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public JsonRsp Remove(CustomModel model)
+        public JsonRsp Remove(BankModel model)
         {
-            int returnvalue = EntityQuery<CustomModel>.Instance.Delete(model);
+            int returnvalue = EntityQuery<BankModel>.Instance.Delete(model);
             return new JsonRsp { success = returnvalue > 0, code = returnvalue };
         }
         /// <summary>
@@ -89,9 +98,9 @@ namespace Ticket.BLL.Custom
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public JsonRsp Update(CustomModel model)
+        public JsonRsp Update(BankModel model)
         {
-            int returnvalue = Update<CustomModel>(model);
+            int returnvalue = Update<BankModel>(model);
             return new JsonRsp { success = returnvalue > 0, code = returnvalue };
         }
 
@@ -100,9 +109,9 @@ namespace Ticket.BLL.Custom
         /// </summary>
         /// <param name="customerID"></param>
         /// <returns></returns>
-        public CustomModel GetModelById(int Id)
+        public BankModel GetModelById(int Id)
         {
-            return GetModel<CustomModel>(Id);
+            return GetModel<BankModel>(Id);
         }
         /// <summary>
         /// save
@@ -112,13 +121,13 @@ namespace Ticket.BLL.Custom
         public JsonRsp DeleteById(long[] Ids)
         {
             //删除 测试数据-----------------------------------------------------
-            CustomModel user = new CustomModel();
-
+            BankModel user = new BankModel(); 
+             
             OQL deleteQ = OQL.From(user)
                             .Delete()
                             .Where(cmp => cmp.Comparer(user.ID, "IN", Ids)) //为了安全，不带Where条件是不会全部删除数据的
                          .END;
-            int returnvalue = EntityQuery<CustomModel>.Instance.ExecuteOql(deleteQ);
+            int returnvalue = EntityQuery<BankModel>.Instance.ExecuteOql(deleteQ);
 
             return new JsonRsp { success = returnvalue > 0, code = returnvalue };
         }
@@ -129,7 +138,7 @@ namespace Ticket.BLL.Custom
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public JsonRsp Save(CustomModel model)
+        public JsonRsp Save(BankModel model)
         {
             if (model.ID == 0)
             {
@@ -150,53 +159,42 @@ namespace Ticket.BLL.Custom
         {
             if (Ids == null)
             {
-                return new JsonRsp { success = false, retmsg = "请选择要操作的数据" };
+                return new JsonRsp { success = false, retmsg="请选择要操作的数据" };
             }
-            CustomModel model = new CustomModel(); 
-            OQL q = OQL.From(model)
-               .Update(model.Status, model.UpdateId, model.UpdateUser, model.UpdateIP, model.UpdateIP)
-                          .Where(cmp => cmp.Comparer(model.ID, "IN", Ids)) //为了安全，不带Where条件是不会全部删除数据的
+            BankModel user = new BankModel();
+            user.Status = status;
+            OQL q = OQL.From(user)
+               .Update(user.Status)
+                          .Where(cmp => cmp.Comparer(user.ID, "IN", Ids)) //为了安全，不带Where条件是不会全部删除数据的
                        .END;
-            int returnvalue = EntityQuery<CustomModel>.Instance.ExecuteOql(q);
+            int returnvalue = EntityQuery<BankModel>.Instance.ExecuteOql(q);
             return new JsonRsp { success = returnvalue > 0, code = returnvalue };
         }
         #endregion
 
-
-        #region ViewModel
-
-        #region 获取列表（全部）
         /// <summary>
         /// 获取列表（全部）
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public JsonRsp<CustomViewModel> GetAllList()
+        public JsonRsp<BankViewModel> GetAllList()
         {
-            JsonRsp<CustomViewModel> rsp = new JsonRsp<CustomViewModel>();
-
-            rsp.data = GetAllModelList().ConvertAll<CustomViewModel>(o =>
+            JsonRsp<BankViewModel> rsp = new JsonRsp<BankViewModel>();
+            List<BankModel> list = GetAllModelList();//使用OQL扩展
+            rsp.data = list.ConvertAll<BankViewModel>(o =>
             {
-                return new CustomViewModel()
+                return new BankViewModel()
                 {
                     ID = o.ID,
-                    CustomTypeId = o.CustomTypeId,
-                    CustomName = o.CustomName,
-                    LinkPhone = o.LinkPhone,
-                    LinkName = o.LinkName,
-                    LinkMobile = o.LinkMobile,
-                    CustomArea = o.CustomArea,
-                    CustomAddress = o.CustomAddress,
+                    BankName = o.BankName,
+                    BankType = o.BankType,
                     CreateId = o.CreateId,
                     CreateUser = o.CreateUser,
                     CreateIP = o.CreateIP,
                     CreateTime = o.CreateTime,
                     Sort = o.Sort,
                     Status = o.Status,
-                    UpdateBy = o.UpdateUser,
-                    UpdateIP = o.UpdateIP,
-                    UpdateTime = o.UpdateTime,
                 };
             }
             );
@@ -204,9 +202,8 @@ namespace Ticket.BLL.Custom
             rsp.code = 0;
             return rsp;
         }
-        #endregion
 
-        #region  获取客户SelectTree
+        #region  获取银行列表SelectTree
         public List<TreeSelect> GetSelectTrees()
         {
             List<TreeSelect> treeSelects = new List<TreeSelect>();
@@ -215,14 +212,12 @@ namespace Ticket.BLL.Custom
                 treeSelects.Add(new TreeSelect
                 {
                     id = item.ID,
-                    name = item.CustomName,
+                    name = item.BankName,
                     value = item.ID,
                 });
             }
             return treeSelects;
         }
-        #endregion
-
         #endregion
     }
 }

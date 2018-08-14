@@ -38,7 +38,7 @@ namespace Ticket.ViewModels.Contract
         } 
         public string MoneyTypeypeStr
         {
-            get { return Util.getStatus(IsCommonCard, typeof(MoneyTypeEnum)); }
+            get { return Util.getStatus(MoneyType, typeof(MoneyTypeEnum)); }
         }
 
         public string IsCommonCardStr

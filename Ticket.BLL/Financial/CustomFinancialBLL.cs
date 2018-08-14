@@ -39,8 +39,7 @@ namespace Ticket.BLL.Financial
         /// <returns></returns>
         public JsonRsp<ContractViewModel> GetPageList(int pageIndex, int pageSize)
         {
-            JsonRsp<ContractViewModel> rsp = new JsonRsp<ContractViewModel>();
-
+            JsonRsp<ContractViewModel> rsp = new JsonRsp<ContractViewModel>(); 
 
             ContractModel contract = new ContractModel();
             CustomModel custom = new CustomModel();

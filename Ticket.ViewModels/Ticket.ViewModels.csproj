@@ -41,11 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountViewModel.cs" />
+    <Compile Include="Bank\BankAccountViewModel.cs" />
+    <Compile Include="Bank\BankViewModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Contract\ChargeCardViewModel.cs" />
     <Compile Include="Contract\ContractViewModel.cs" />
     <Compile Include="Custom\CustomTypeViewModel.cs" />
     <Compile Include="Custom\CustomViewModel.cs" />
+    <Compile Include="Financial\CustomReceiptedViewModel.cs" />
+    <Compile Include="Financial\CustomAccReceiptViewModel.cs" />
     <Compile Include="LayoutViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="Merchant\MerchantTypeViewModel.cs" />

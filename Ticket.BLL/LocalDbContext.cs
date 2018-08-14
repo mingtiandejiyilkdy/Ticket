@@ -11,6 +11,7 @@ using Ticket.Models.Contract;
 using Ticket.Models.Merchant;
 using Ticket.Models.Product;
 using Ticket.Models.Financial;
+using Ticket.Models.Bank; 
 
 namespace Ticket.BLL
 {
@@ -63,8 +64,14 @@ namespace Ticket.BLL
             CheckTableExists<CustomFinancialModel>();
             //创建产品类别表
             CheckTableExists<CustomFinancialDetailModel>();
-            //创建充卡记录表
-            CheckTableExists<ChargeCardsModel>(); 
+            //创建银行表
+            CheckTableExists<BankModel>();
+            //创建银行账号表
+            CheckTableExists<BankAccountModel>();
+            //创建客户应收款表
+            CheckTableExists<CustomAccReceiptModel>();
+            //创建客户实收款表
+            CheckTableExists<CustomReceiptedModel>(); 
             return true;
         }
 

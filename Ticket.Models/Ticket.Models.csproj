@@ -53,10 +53,14 @@
     <Compile Include="AdminAccountRole.cs" />
     <Compile Include="AdminMenu.cs" />
     <Compile Include="AdminRole.cs" />
+    <Compile Include="Bank\BankAccountModel.cs" />
+    <Compile Include="Bank\BankModel.cs" />
     <Compile Include="Contract\ChargeCardsModel.cs" />
     <Compile Include="Contract\ContractModel.cs" />
     <Compile Include="Custom\CustomModel.cs" />
     <Compile Include="Custom\CustomTypeModel.cs" />
+    <Compile Include="Financial\CustomReceiptedModel.cs" />
+    <Compile Include="Financial\CustomAccReceiptModel.cs" />
     <Compile Include="Financial\CustomFinancialDetailModel.cs" />
     <Compile Include="Financial\CustomFinancialModel.cs" />
     <Compile Include="LogOnModel.cs" />

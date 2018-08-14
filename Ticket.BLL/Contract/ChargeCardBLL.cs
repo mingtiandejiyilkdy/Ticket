@@ -10,7 +10,7 @@ using Ticket.ViewModels.Contract;
 using Ticket.Models.Custom;
 using Ticket.Models.Ticket;
 using Ticket.Models.Financial;
-using Ticket.Enum;
+using Ticket.Enum; 
 
 namespace Ticket.BLL.Contract
 {
@@ -68,6 +68,7 @@ namespace Ticket.BLL.Contract
                 CustomName = custom.CustomName,
                 TicketTypeID = c.TicketTypeID,
                 TicketTypeName = t.TicketTypeName,
+                MoneyType=c.MoneyType,
                 CurrentCount = c.CurrentCount,
                 FaceAmount = c.FaceAmount,
                 CurrentAmount = c.CurrentAmount,
@@ -172,18 +173,20 @@ namespace Ticket.BLL.Contract
                 returnvalue += Update<CustomFinancialModel>(financialModel, db);
                 returnvalue += Add<ChargeCardsModel>(model, db);
 
-                ////新增客户应付
-                //CustomAccReceiptModel customAR = new CustomAccReceiptModel();
-                //customAR.CustomId = model.CustomId;
-                //customAR.ChargeCardNo = model.ChargeCardNo;
-                //customAR.ARAmount = model.CurrentAmount;
-                //customAR.Status = (int)ARStatusEnum.已确认;
-                //customAR.CreateUser = AdminName;
-                //customAR.CreateIP = Util.GetLocalIP();
-                //customAR.CreateTime = DateTime.Now;
-                //returnvalue = EntityQuery<CustomAccReceiptModel>.Instance.Insert(customAR); 
+                //新增客户应付
+                CustomAccReceiptModel customAR = new CustomAccReceiptModel();
+                customAR.CustomId = model.CustomId;
+                customAR.ChargeCardNo = model.ChargeCardNo;
+                customAR.CurrentAmount = model.MoneyType == (int)MoneyTypeEnum.应收 ? model.CurrentAmount : 0;
+                customAR.Status = (int)ARStatusEnum.已确认;
+                customAR.CreateId = AdminId;
+                customAR.CreateUser = AdminName;
+                customAR.CreateIP = Util.GetLocalIP;
+                customAR.CreateTime = DateTime.Now;
+                returnvalue += Add<CustomAccReceiptModel>(customAR,db); 
+
                 //事务提交
-                if (returnvalue == 3)
+                if (returnvalue == 4)
                 {
                     db.Commit();
                 }

@@ -133,10 +133,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Admin\AccountController.cs" />
+    <Compile Include="Controllers\Admin\BankAccountController.cs" />
+    <Compile Include="Controllers\Admin\BankController.cs" />
     <Compile Include="Controllers\Admin\BaseController.cs" />
     <Compile Include="Controllers\Admin\ChargeCardController.cs" />
     <Compile Include="Controllers\Admin\ContractController.cs" />
     <Compile Include="Controllers\Admin\CustomController.cs" />
+    <Compile Include="Controllers\Admin\CustomReceiptedController.cs" />
     <Compile Include="Controllers\Admin\CustomTypeController.cs" />
     <Compile Include="Controllers\Admin\HomeController.cs" />
     <Compile Include="Controllers\Admin\MenuController.cs" />
@@ -149,6 +152,7 @@
     <Compile Include="Controllers\Admin\TicketBatchController.cs" />
     <Compile Include="Controllers\Admin\TicketTypeController.cs" />
     <Compile Include="Controllers\Admin\ProductTypeController.cs" />
+    <Compile Include="Controllers\Admin\CustomAccReceiptController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -473,6 +477,13 @@
     <Content Include="Views\Admin\ChargeCard\AddFromContract.cshtml" />
     <Content Include="Views\Admin\ChargeCard\Index.cshtml" />
     <Content Include="Views\Admin\ChargeCard\Show.cshtml" />
+    <Content Include="Views\Admin\BankAccount\Index.cshtml" />
+    <Content Include="Views\Admin\BankAccount\Show.cshtml" />
+    <Content Include="Views\Admin\Bank\Index.cshtml" />
+    <Content Include="Views\Admin\Bank\Show.cshtml" />
+    <Content Include="Views\Admin\CustomAccReceipt\Index.cshtml" />
+    <Content Include="Views\Admin\CustomReceipted\Index.cshtml" />
+    <Content Include="Views\Admin\CustomReceipted\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ticket.BLL\Ticket.BLL.csproj">
